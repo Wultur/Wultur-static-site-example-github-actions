@@ -1,0 +1,21 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "S3sync",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject",
+                "cloudfront:CreateInvalidation"
+            ],
+            "Resource": [
+                "arn:aws:cloudfront::351669002063:distribution/E2O90LLOT3M2VL",
+                "arn:aws:s3:::cloudmacloud.online",
+                "arn:aws:s3:::cloudmacloud.online/*"
+            ]
+        }
+    ]
+}
