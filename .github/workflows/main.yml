@@ -1,0 +1,39 @@
+name: CI-CD-SyncS3-StaticWebSite-CloudFrontInvalidation
+env:
+  AWS_REGION_NAME : "us-east-1"
+
+on:
+  push:
+    branches: main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# These permissions are needed to interact with GitHub's OIDC Token endpoint.
+permissions:
+ id-token: write
+ contents: read
+
+jobs:
+  sync-s3-bucket:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume       :  ${{ secrets.ROLE_TO_ASSUME }}
+          role-session-name    :  static-site-example-session
+          aws-region           :  ${{ env.AWS_REGION_NAME }}
+
+      - name: Show files in current dir
+        run: ls -la
+      
+      - name: Run a aws s3 syncronization
+        run: aws s3 sync . ${{ secrets.AWS_S3_BUCKET }} --exclude "*README*" --exclude "*entities*" --exclude "*policies*" --exclude "*.git*" --delete
+        
+      - name: Create CloudFront Invalidation
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_ID }} --paths "/*"
