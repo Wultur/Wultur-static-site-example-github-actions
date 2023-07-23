@@ -1,4 +1,4 @@
-<img src="https://github.com/Wultur/static-site-example-github-actions/actions/main.yml/badge.svg"><br>
+<img src="https://github.com/Wultur/static-site-example-github-actions/actions/workflows/main.yml/badge.svg"><br>
 
 # static-site-example-github-actions
 
